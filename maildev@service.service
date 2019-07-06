@@ -1,0 +1,29 @@
+# Save as e.g. /etc/systemd/system/maildev@service.service
+[Unit]
+Description=MailDev
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+Restart=always
+User=root
+Group=docker
+
+# Shutdown container (if running) when unit is stopped
+ExecStartPre=/usr/bin/docker-compose -f /opt/maildev/docker-compose.yml down -v
+# Start container when unit is started
+ExecStart=/usr/bin/docker-compose -f /opt/maildev/docker-compose.yml up -d
+# Stop container when unit is stopped
+ExecStop=/usr/bin/docker-compose -f /opt/maildev/docker-compose.yml down -v
+
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
+
+#sudo systemctl daemon-reload
+#sudo systemctl start maildev@service
+#sudo systemctl enable docker
+#sudo systemctl enable maildev@service
