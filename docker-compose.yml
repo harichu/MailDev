@@ -7,4 +7,4 @@ services:
     build: ./maildev
     ports:
       - "1080:80"
-      - "2525:25"
+      - "1025:25"
