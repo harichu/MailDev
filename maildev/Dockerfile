@@ -13,6 +13,6 @@ RUN apk add --no-cache curl \
   && npm install iconv --save \
   && npm prune \
   && npm cache clean --force \
-  && rm -rf /tmp/
+  && rm -rf /tmp/*
 
 EXPOSE 80 25 
