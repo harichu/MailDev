@@ -7,11 +7,14 @@ RUN apk add --update \
   && rm -rf /var/cache/apk/
 WORKDIR /usr/src/app
 ENV NODE_ENV production
-RUN npm install node-gyp -g && \
-    npm install iconv --save && \
-    npm prune && \
-    npm cache clean \
-    rm -rf /tmp/
+RUN apk add --no-cache curl \
+  && npm install \
+  && npm install node-gyp -g \
+  && npm install iconv --save \
+  && npm prune \
+  && npm cache clean --force \
+  && rm package*.json \
+  && rm -rf /tmp/
 
 LABEL maintainer="Maxime Hélias <maximehelias16@gmail.com>"
 
