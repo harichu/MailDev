@@ -13,9 +13,6 @@ RUN apk add --no-cache curl \
   && npm install iconv --save \
   && npm prune \
   && npm cache clean --force \
-  && rm package*.json \
   && rm -rf /tmp/
-
-LABEL maintainer="Maxime Hélias <maximehelias16@gmail.com>"
 
 EXPOSE 80 25 
