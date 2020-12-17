@@ -1,34 +1,5 @@
-# Base
-FROM node:10-alpine as base
-MAINTAINER "Dan Farrelly <daniel.j.farrelly@gmail.com>"
+FROM djfarrelly/maildev
 
-ENV NODE_ENV production
-
-# Build
-FROM base as build
-
-WORKDIR /root
-COPY package*.json ./
-
-RUN apk add --no-cache curl \
-  && npm install \
-  && npm prune \
-  && npm cache clean --force \
-  && rm package*.json
-
-# Prod
-FROM base as prod
-
-USER node
-WORKDIR /home/node
-
-COPY --chown=node:node . /home/node
-COPY --chown=node:node --from=build /root/node_modules /home/node/node_modules
+LABEL maintainer="Maxime Hélias <maximehelias16@gmail.com>"
 
 EXPOSE 80 25
-
-ENTRYPOINT ["/home/node/bin/maildev"]
-CMD ["--web", "80", "--smtp", "25"]
-
-HEALTHCHECK --interval=10s --timeout=1s \
-  CMD curl -k -f -v http://localhost:80/healthz || exit 1
